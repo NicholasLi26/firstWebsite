@@ -1,23 +1,21 @@
-import logo from './logo.svg';
-import './App.css';
+import './css/App.css';
+import image1 from './images/random/Forest2.png';
+import React, { useEffect } from 'react';
+import Background from './components/Background.js';
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Background />
+      <div className="content">
+        <h1>Welcome to the App</h1>
+        <p>This is a simple React app with a background image.</p>
+        <br style={{ lineHeight: '10000px' }} />
+        <p>Scroll down to see the background effect.</p>
+      </div>
+
+
+
     </div>
   );
 }
