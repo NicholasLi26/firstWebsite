@@ -1,0 +1,23 @@
+@import url('https://fonts.googleapis.com/css2?family=Advent Pro');
+
+.name {
+    font-size: 2em;
+    padding-top: 10%;
+    width: 100%;
+    text-align: center;
+    min-height: 200vh; 
+}
+
+.name h1 {
+    font-size: 3em;
+    color: #FFFFFF;
+    text-align: center;
+    font-family: Advent Pro, sans-serif;
+}
+
+.content {
+    padding-top: 50px; /* Space between content */
+    font-size: 1.5em;
+    color: white;
+    text-align: center;
+}
