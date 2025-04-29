@@ -7,7 +7,7 @@ function App() {
   const parentRef = React.useRef(null);
   return (
     
-    <div className="App" ref = {parentRef} style={{ overflowY: 'scroll' }}>
+    <div className="App" ref = {parentRef} style={{  overflowY: 'scroll' }}>
       
       <Background parentRef = {parentRef} />
       <Home />
