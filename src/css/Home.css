@@ -6,15 +6,15 @@
     padding-bottom: 15%;
     width: 100%;
     min-height: 175vh; 
-    background-color: azure;
-    opacity: .1;
+    /* background-color: rgb(FFFFFF, 0.5); */
+    
 }
 
 .main h1 {
     font-size: 6rem;
-    color: #FFFFFF;
     text-align: center;
     font-family: Advent Pro, sans-serif;
+    color: white;
 }
 
 .content {

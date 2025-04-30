@@ -1,16 +1,10 @@
-img {
-    left: 0;
-    top: 0;
-    z-index: -1;
-    position: fixed;
 
-}
 canvas {
     left: 0;
     top: 0;
     z-index: -2;
     position: fixed;
-}  
+}
 
 .background-container {
   position: fixed;
@@ -20,21 +14,18 @@ canvas {
   top: 0;
   left: 0;
   overflow: hidden;
-  pointer-events: none; /* So that mouse events go through */
-  z-index: -1;
+  pointer-events: none;
+  z-index: -1; 
 }
 
-.parallax-image {
-  position: absolute;
-  top: 0;
-  left: 0;
-  object-fit: cover;
-  will-change: transform;
-  /* width: 100%;  <-- REMOVE this */
-  /* height: 100%; <-- REMOVE this */
-}
+/* img {
+    left: 0;
+    top: 0;
+    z-index: -1;
+    position: fixed;
+} 
 
-/* .animated-background {
+.animated-background {
     top: 0;
     left: 0;
     width: 100%;
