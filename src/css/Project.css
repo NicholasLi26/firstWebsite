@@ -1,0 +1,46 @@
+.main-container-project {
+
+  width: 100vw;
+  height: 100%;
+  position: relative;
+  background-color: purple;
+  opacity: 1;
+  
+}
+
+.project {
+    left: 15vw;
+    height: 60vh;
+    width: 70vw;
+    position: relative;
+    opacity: 1;
+    background-color: green;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.image-container {
+    position: relative;
+    width: 33%;
+    height: 100%;
+    opacity: 1;
+    background-color: blue;
+}
+
+.image-container img {
+    width: auto;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10%;
+}
+
+.text-container {
+    position: relative;
+    width: 67%;
+    height: 100%;
+    padding-left: 5vw;
+    
+    opacity: 1;
+    background-color: red;
+}

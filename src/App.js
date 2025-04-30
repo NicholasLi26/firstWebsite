@@ -10,7 +10,7 @@ function App() {
     <div className="App" ref = {parentRef} style={{  overflowY: 'scroll' }}>
       
       <Background parentRef = {parentRef} />
-      <Home />
+      <Home  parentRef = {parentRef} />
 
     </div>
   );
