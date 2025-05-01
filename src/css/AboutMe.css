@@ -1,0 +1,89 @@
+@import url('https://fonts.googleapis.com/css2?family=Advent Pro');
+
+.main {
+    font-size: 1rem;
+    padding-top: 20vh;
+    padding-bottom: 15%;
+    width: 100%;
+    min-height: 175vh; 
+    /* background-color: rgb(FFFFFF, 0.5); */
+    
+}
+
+.main h1 {
+    font-size: 6rem;
+    text-align: center;
+    font-family: Advent Pro, sans-serif;
+    color: white;
+}
+
+.content {
+    padding-top: 50px; /* Space between content */
+    font-size: 1.5em;
+    color: white;
+    text-align: center;
+}
+
+
+.main-container-AboutMe {
+
+    width: 100%;
+    height: 100%;
+    position: relative;
+    z-index: 1;
+
+}
+
+.AboutMe {
+    left: 15vw;
+    height: 60vh;
+    width: 70vw;
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.image-container-AboutMe {
+    position: relative;
+    width: 45%;
+    height: 100%;
+    background-color: rgba(58, 88, 97, 0.726);
+    border-top-left-radius: 5vw;
+    border-bottom-left-radius: 5vw;
+}
+
+.image-subcontainer-AboutMe {
+    position: relative;
+    width: 90%;
+    height: 90%;
+    /* background-color: rgba(58, 88, 97, 0.726); */
+    padding-left: 5%;
+    padding-top: 5%;
+}
+
+.image-subcontainer-AboutMe img {
+    width: 100%;
+    height: 100%;
+    border-radius: 12%;
+    object-fit: cover;
+}
+
+.text-container-AboutMe {
+    position: relative;
+    width: 67%;
+    height: 100%;
+
+    background-color: rgba(71, 149, 173, 0.801);
+    border-top-right-radius: 5vw;
+    border-bottom-right-radius: 5vw;
+}
+
+.aboutMe-text {
+    position: relative;
+    width: 90%;
+    height: 90%;
+    padding-left: 5%;
+    padding-top: 5%;
+    color: white;
+}

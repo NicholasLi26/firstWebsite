@@ -21,10 +21,7 @@ function Background( {parentRef} ) {
     const [images, setImages] = useState([]);
 
     const zoom = true; // Turn on off zoom
-    const speed = 10; //fps
-
-    const [tallThin, setTallThin] = useState(false);
-
+    const speed = 15; //fps
 
     useEffect(() => {
         const handleScroll = () => {
@@ -101,9 +98,7 @@ function Background( {parentRef} ) {
         if (!imageLoaded || !imageRef.current) return;
 
         const frameIndex = Math.floor(count / speed) % totalFrames;
-        const backgroundOffsetY = Math.floor(scrollRef.current * 1.1);
-        setTallThin (window.innerHeight > window.innerWidth+Math.floor(-window.innerWidth/bottomHeight))
-        
+        const backgroundOffsetY = Math.floor(scrollRef.current * 1.1);        
         //console.log(ctx.canvas.height, ctx.canvas.width, window.innerHeight, window.innerWidth, tallThin)
         //console.log(window.innerheight > window.innerWidth+Math.floor(-ctx.canvas.height/bottomHeight), window.innerWidth, ctx.canvas.width)
 
@@ -159,7 +154,6 @@ function Background( {parentRef} ) {
             );
         }
     };
-
 
     return (
         <div className = "background-container">

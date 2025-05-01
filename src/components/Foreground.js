@@ -26,17 +26,6 @@ function Foreground( {parentRef} ) {
     const [images, setImages] = useState([]);
 
     const zoom = true; // Turn on off zoom
-    const speed = 5; // Speed of the animation
-
-    const [tallThin, setTallThin] = useState(false);
-
-    const imageMeta = [
-        { id: 'bt1', src: bt1, top: (0 - 2 * Math.floor(((frameHeight/3) - scrollRef.current*1.1)/15))},
-        { id: 'bt2', src: bt2,  top: 2*(0 - 2 * Math.floor(((frameHeight/3) - scrollRef.current*1.1)/15))},
-        { id: 'bt3', src: bt3, top: 3*(0 - 2 * Math.floor(((frameHeight/3) - scrollRef.current*1.1)/15))},
-        { id: 'trees', src: trees, top: 4*(0 - 2 * Math.floor(((frameHeight/3) - scrollRef.current*1.1)/15))},
-    ]
-    const imageRefs = useRef([]);
 
     useEffect(() => {   // Preload images
         const imagePaths = importImages(
@@ -130,17 +119,14 @@ function Foreground( {parentRef} ) {
         if (!imageLoaded || !imageRef.current) return;
 
         const backgroundOffsetY = Math.floor(scrollRef.current * 1.1);
-        setTallThin (window.innerHeight > window.innerWidth+Math.floor(-window.innerWidth/bottomHeight))
         
         //console.log(ctx.canvas.height, ctx.canvas.width, window.innerHeight, window.innerWidth, tallThin)
         //console.log(window.innerheight > window.innerWidth+Math.floor(-ctx.canvas.height/bottomHeight), window.innerWidth, ctx.canvas.width)
 
         ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
-
         //console.log(backgroundOffsetY*ratio, window.innerWidth/3,ratio)
 
-        //backgroundOffsetY < ctx.canvas.height/bott
         if ( backgroundOffsetY < ctx.canvas.height/bottomHeight) {
             
             let y = 0;
@@ -228,21 +214,14 @@ function Foreground( {parentRef} ) {
 
     return (
         <div className = "foreground-container">
-
-        <Canvas
-            draw={draw2}
-            width={canvasSize.width}
-            height={canvasSize.height}
-            id = "foreground"
-            style = {{ zIndex: 5}}
+            <Canvas
+                draw={draw2}
+                width={canvasSize.width}
+                height={canvasSize.height}
+                id = "foreground"
+                style = {{ zIndex: 5}}
             />
-           
         </div>
-        
-        
-        // <div className="animated-background" >
-        //     <img id = "background" src = {forest} />
-        // </div>
     );
 }
 
