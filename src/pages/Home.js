@@ -32,12 +32,9 @@ const Home = ({parentRef}) => {
         
         return(
             <div className="main">
-                <h1>Nicholas Li</h1>
-                <div className="content">
-                    {/* Content or elements you want to show on the page */}
-                    <p>dsfsdfs</p>
+                <div className='name-container'>
+                    <h1>Nicholas Li</h1>
                 </div>
-
             </div>
         )
     }

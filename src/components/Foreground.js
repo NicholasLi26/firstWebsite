@@ -1,12 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import '../css/Foreground.css'; // Import the CSS file for styling
-import forest from '../images/sprites/forest2.png'; // Import the image
 import Canvas from './Canvas.js'; // Import the Canvas component
 import sky from '../images/sprites/sky3.png'; // Import the image
-import trees from '../images/sprites/backgroundTest/trees.png'; // Import the image
-import bt1 from '../images/sprites/backgroundTest/bt1.png'; // Import the image
-import bt2 from '../images/sprites/backgroundTest/bt2.png'; // Import the image
-import bt3 from '../images/sprites/backgroundTest/bt3.png'; // Import the image
+
 
 
 function Foreground( {parentRef} ) {
