@@ -73,9 +73,9 @@ const AboutMe = (props = []) => {
                             <p>
                                 If i didn't get into coding, I think I would've enjoyed being a geologist.
                                 I love being outdoors, and I've always wanted to be an astronaut, so I figured geology would be 
-                                a good way into both. I also enjoy art, and although I'm mediocre, I do enjoy encorperating it into
+                                a good way into both. I also enjoy art, and although I'm mediocre, I do like to encorperate it into
                                 the games I develop (As well as this website!). Aside from that, I enjoy video games (I'm in CS),
-                                rock climbing (I'm in CS), as well as reading and classical guitar (Not very CS like). I'm big into music,
+                                rock climbing (I'm in CS), as well as reading and classical guitar (Not very CS). I'm big into music,
                                 if you have any playlists or song recomendations let me know. I'm Emerald 4 if anyone
                                 is wondering, but currently almost 6 months clean. &#129395; &#128293;
                             </p>

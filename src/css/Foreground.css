@@ -16,3 +16,18 @@ canvas {
     z-index: -1;
     position: fixed;
 }
+
+.sign-button-container{
+    position: fixed;
+    left: 50%;
+    transform: translate(-50%, 0);
+
+    z-index: 10;
+    background-color: rgba(180, 74, 74, 0.644);
+}
+
+.sign-button-container canvas{
+  left: 0;
+  top: 0;
+  position: relative;
+}
