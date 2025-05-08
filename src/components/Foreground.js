@@ -27,7 +27,7 @@ function Foreground({ parentRef }) {
     const frameIndex = useRef(2);
     const signDivScale = 3;
     const signDivTop = useRef(0);
-    const ratio = useRef(0);
+    const CP = useRef(0);
 
     const signDown = useRef(0);
     const signRef2 = useRef(null);
@@ -117,10 +117,13 @@ function Foreground({ parentRef }) {
 
             signDivTop.current = Math.floor(w / bottomHeight) + w / 6;
 
+            
+
             const width = w;
             const height = w;
             setCanvasSize({ width, height });
 
+            
             // console.log("Image loaded and canvas size set:", canvasSize.width, canvasSize.height, signCanvasSize.widthS, signCanvasSize.heightS);
         };
 
@@ -239,38 +242,54 @@ function Foreground({ parentRef }) {
 
 
         else if (zoom && backgroundOffsetY < ctx.canvas.height / zoomHeight) {
+            
+            
             let x = 0;
-            let zoom = Math.floor((ctx.canvas.height / bottomHeight - backgroundOffsetY));
-
-            const scrolled = backgroundOffsetY / ctx.canvas.height;
-            console.log(scrolled)
             images.forEach((image, index) => {
+                
+                const scrolled = backgroundOffsetY / ctx.canvas.height;
+                const percentageZoom = (scrolled-0.33)/(0.5-0.33)
+                let zoom = (percentageZoom*x);
+                const growth = frameWidth - zoom*frameWidth
+                
+                console.log(scrolled, percentageZoom, zoom, growth)
+                console.log(scrolled)
                 ctx.drawImage(
                     image,
-                    -Math.floor((zoom * x) / 2), -Math.floor((zoom * x * 2) / 3),
-                    frameWidth + zoom * x, frameWidth + zoom * x,
+                    zoom*frameWidth/2, zoom*frameWidth/1.5,
+                    growth, growth ,
                     0, Math.floor(-ctx.canvas.height / bottomHeight),
                     ctx.canvas.width, ctx.canvas.height
                 );
+                
+                // ctx.drawImage(
+                //     image,
+                //     -Math.floor((zoom * x) / 2), -Math.floor((zoom * x * 2) / 3),
+                //     frameWidth + zoom * x, frameWidth + zoom * x,
+                //     0, Math.floor(-ctx.canvas.height / bottomHeight),
+                //     ctx.canvas.width, ctx.canvas.height
+                // );
                 const signCanvas = document.getElementById("signCanvas");
 
                 if (index === images.length - 1) {
-                    const bigoffsetY = -Math.floor((zoom * x) / 1.5);
-                    const ROE = -(zoom * x);
-                    const movementUp = bigoffsetY
-                    const movementDown = ROE - bigoffsetY
-                    const horizonLine = movementUp / (movementUp + movementDown)
-                    const yDown = Math.floor(horizonLine * window.innerHeight)
+                    const horizonLine = (ctx.canvas.height - ctx.canvas.height / bottomHeight)/ctx.canvas.height
+                    const ratio = ctx.canvas.height / window.innerHeight
+                    const pixelRatio = ctx.canvas.width / window.innerWidth ? window.innerWidth > window.innerHeight : ctx.canvas.width / window.innerHeight
+                    const hYC = Math.floor(horizonLine * ctx.canvas.height) +ctx.canvas.height/600
+                    const hYW = hYC/pixelRatio                    
                     const BP = signDivTop.current - ctx.canvas.height / bottomHeight + ctx.canvas.height / 15
-                    const signZoom = zoom  *x*1.5* ((yDown - BP) / ctx.canvas.height)
+                    const distTop = (hYW - BP)
+                    const distBottom =  (hYW - (BP+ctx.canvas.width/5+ ctx.canvas.width*zoom/5))
+                    const amountShowing = growth/frameWidth
+                    const perc = distTop/hYW
+                    const translateY = (distTop/(hYW*window.innerHeight)) * ((zoom*frameWidth/1.5) /pixelRatio)
 
-
+                    // ctx.rect(0, hYW-distTop, ctx.canvas.width, 5);
+                    // ctx.rect(0, hYW-distBottom, ctx.canvas.width, 5);
+                    // ctx.fillStyle = "black";
+                    // ctx.fill();
                     const zoom1 = Math.floor((-zoom * x) / signDivScale);
 
-                    // const zoomY = Math.round(ctx.canvas.height*0.75)
-                    // const difference = BP + ctx.canvas.height / bottomHeight +((ctx.canvas.width-(zoom*x))/5)/2   - zoomY
-                    // const percentage = difference/((ctx.canvas.width-(zoom*x))/5)
-                    // console.log(BP, zoomY, difference, percentage)
 
                     const move = (signDivTop.current + Math.floor(-ctx.canvas.height / bottomHeight)) - zoom1 / 1.5;
                     signRef2.current.setProperty("width", `${signCanvasSize.signWidth + zoom1 * 1.3}px`);
@@ -284,11 +303,14 @@ function Foreground({ parentRef }) {
                         signRef.current,
                         (frameIndex.current * signWidth), 0, //only change x on sign for frames
                         signWidth, signWidth, //keep sign width for proper scaling
-                        (ctx.canvas.width / 2) - ctx.canvas.width / 5 * Math.pow(0.67 + scrolled, 1.9) / 2, BP + signZoom, //change position based on center of thing
-                        ctx.canvas.width / 5 * Math.pow(0.67 + scrolled, 1.9), ctx.canvas.width / 5 * Math.pow(0.67 + scrolled, 1.9) //increase canvas drawing size to avoid having to reposition
+                        // (ctx.canvas.width / 2) - ctx.canvas.width / 5 * Math.pow(0.67 + scrolled, 1.9) / 2
+                        ctx.canvas.width/2 - (ctx.canvas.height*(zoom+1))/(5*amountShowing)/2, BP -  distTop * translateY, //change position based on center of thing
+                        // ctx.canvas.width / 5 * Math.pow(0.67 + scrolled, 1.9)
+                        (ctx.canvas.height*(zoom+1))/(5*amountShowing), (ctx.canvas.height*(zoom+1))/(5*amountShowing) //increase canvas drawing size to avoid having to reposition
                     );
+
                 }
-                x += 0.5;
+                x += 0.07;
             });
         }
 

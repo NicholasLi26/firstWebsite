@@ -113,7 +113,7 @@ function Background( {parentRef} ) {
                 imageRef.current,
                 frameIndex * frameWidth, 0,// x, y of image top right
                 frameWidth, frameHeight,//pixels shown in image
-                0, Math.floor(-backgroundOffsetY), //
+                0, Math.floor(-backgroundOffsetY), //x, y but inverted?
                 ctx.canvas.width, ctx.canvas.height 
             );
         }

@@ -36,7 +36,7 @@ canvas {
   position:relative;
   width: 70%;
   height:33%;
-  /* background-color: rgba(222, 152, 240, 0.644); */
+  background-color: rgba(222, 152, 240, 0.644);
   pointer-events: all;
 }
 
@@ -45,7 +45,7 @@ canvas {
   width: 70%;
   height:33%;
   left:30%;
-  /* background-color: rgba(180, 74, 74, 0.644); */
+  background-color: rgba(180, 74, 74, 0.644);
   pointer-events: all;
 }
 
@@ -53,7 +53,7 @@ canvas {
   position:relative;
   width: 70%;
   height:33%;
-  /* background-color: rgba(111, 248, 214, 0.644); */
+  background-color: rgba(111, 248, 214, 0.644);
   pointer-events: all;
 }
 
