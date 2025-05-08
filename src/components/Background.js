@@ -111,9 +111,9 @@ function Background( {parentRef} ) {
         if ( backgroundOffsetY < ctx.canvas.height/bottomHeight) {
             ctx.drawImage(
                 imageRef.current,
-                frameIndex * frameWidth, 0,
-                frameWidth, frameHeight,
-                0, Math.floor(-backgroundOffsetY),
+                frameIndex * frameWidth, 0,// x, y of image top right
+                frameWidth, frameHeight,//pixels shown in image
+                0, Math.floor(-backgroundOffsetY), //
                 ctx.canvas.width, ctx.canvas.height 
             );
         }

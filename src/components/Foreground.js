@@ -27,6 +27,7 @@ function Foreground({ parentRef }) {
     const frameIndex = useRef(2);
     const signDivScale = 3;
     const signDivTop = useRef(0);
+    const ratio = useRef(0);
 
     const signDown = useRef(0);
     const signRef2 = useRef(null);
@@ -96,7 +97,7 @@ function Foreground({ parentRef }) {
         img.onload = () => {
             imageRef.current = img;
             signRef.current = img2;
-            
+
             setImageLoaded(true);
             let w;
             if (window.innerHeight > window.innerWidth + Math.floor(-window.innerWidth / bottomHeight)) {
@@ -111,10 +112,10 @@ function Foreground({ parentRef }) {
 
             }
             const signWidth = Math.floor(w / signDivScale);
-            const signHeight = Math.floor(w / (signDivScale*2));
-            setSignCanvasSize({ signWidth, signHeight }); 
+            const signHeight = Math.floor(w / (signDivScale * 2));
+            setSignCanvasSize({ signWidth, signHeight });
 
-            signDivTop.current = Math.floor(w / bottomHeight)+w/6.5;
+            signDivTop.current = Math.floor(w / bottomHeight) + w / 6;
 
             const width = w;
             const height = w;
@@ -141,15 +142,15 @@ function Foreground({ parentRef }) {
                 style.left = `${0}px`;
             }
             const signWidth = Math.floor(w / signDivScale);
-            const signHeight = Math.floor(w / (signDivScale*2));
-            setSignCanvasSize({signWidth, signHeight});
-            
-            signDivTop.current = Math.floor(w / bottomHeight)+w/7;
+            const signHeight = Math.floor(w / (signDivScale * 2));
+            setSignCanvasSize({ signWidth, signHeight });
+
+            signDivTop.current = Math.floor(w / bottomHeight) + w / 6;
 
             const width = w;
             const height = w;
             setCanvasSize({ width, height });
-            
+
         };
         window.addEventListener('resize', handleResize);
 
@@ -163,17 +164,39 @@ function Foreground({ parentRef }) {
 
         //console.log(ctx.canvas.height, ctx.canvas.width, window.innerHeight, window.innerWidth, tallThin)
         //console.log(window.innerheight > window.innerWidth+Math.floor(-ctx.canvas.height/bottomHeight), window.innerWidth, ctx.canvas.width)
-        
+
         ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
         //console.log(backgroundOffsetY*ratio, window.innerWidth/3,ratio)
 
         //console.log(canvasSize.width, canvasSize.height, ctx.canvas.width, ctx.canvas.height, signCanvasSize.widthS, signCanvasSize.heightS)
 
+        let targetPos;
+        
+
+        if ((count / turnSpeed) % 1 === 0) {
+            if (hovering === "main") {
+                targetPos = sign1End;
+            } else if (hovering === "project") {
+                targetPos = sign2End;
+            } else if (hovering === "aboutMe") {
+                targetPos = sign3End;
+            }
+            else {
+                targetPos = signCenter;
+            }
+            if (frameIndex.current > targetPos)
+                frameIndex.current -= 1;
+
+            else if (frameIndex.current < targetPos)
+                frameIndex.current += 1;
+        }
+
         if (backgroundOffsetY < ctx.canvas.height / bottomHeight) {
 
             let y = 0;
-            let x = 0.9
+            let x = 0.9;
+
             images.forEach((image, index) => {
                 ctx.drawImage(
                     image,
@@ -184,10 +207,28 @@ function Foreground({ parentRef }) {
                 );
 
                 if (index === images.length - 1) {
-                    const move =  signDivTop.current + Math.floor(-backgroundOffsetY - y);
-                    
+                    const move = signDivTop.current + Math.floor(-backgroundOffsetY - y);
+
                     //console.log(move, signDown.current, backgroundOffsetY, y)
                     signRef2.current.setProperty("top", `${move}px`);
+
+
+                    //console.log(targetPos)        
+                    if ((count / turnSpeed) % 1 === 0) {
+                        if (frameIndex.current > targetPos)
+                            frameIndex.current -= 1;
+
+                        else if (frameIndex.current < targetPos)
+                            frameIndex.current += 1;
+                    }
+
+                    ctx.drawImage(
+                        signRef.current,
+                        frameIndex.current * signWidth, 0,
+                        signWidth, signWidth,
+                        4 * ctx.canvas.width / 10, move + ctx.canvas.height / 15, //cetner 
+                        ctx.canvas.width / 5, ctx.canvas.height / 5
+                    );
                 }
 
                 y = y - 2 * Math.floor(x * ((ctx.canvas.height / bottomHeight) - backgroundOffsetY) / 15);
@@ -199,26 +240,53 @@ function Foreground({ parentRef }) {
 
         else if (zoom && backgroundOffsetY < ctx.canvas.height / zoomHeight) {
             let x = 0;
-            let zoom = Math.floor((ctx.canvas.height / bottomHeight - backgroundOffsetY) ^ 2 / 20);
-            //console.log(zoom, ((ctx.canvas.height / bottomHeight - backgroundOffsetY) ^ 2) /20)
+            let zoom = Math.floor((ctx.canvas.height / bottomHeight - backgroundOffsetY));
+
+            const scrolled = backgroundOffsetY / ctx.canvas.height;
+            console.log(scrolled)
             images.forEach((image, index) => {
                 ctx.drawImage(
                     image,
-                    -Math.floor((zoom * x) / 2), -Math.floor((zoom * x) / 1.5),
+                    -Math.floor((zoom * x) / 2), -Math.floor((zoom * x * 2) / 3),
                     frameWidth + zoom * x, frameWidth + zoom * x,
                     0, Math.floor(-ctx.canvas.height / bottomHeight),
                     ctx.canvas.width, ctx.canvas.height
                 );
                 const signCanvas = document.getElementById("signCanvas");
-                
+
                 if (index === images.length - 1) {
-                    const zoom1 =   Math.floor((-zoom * x)/signDivScale);
-                    signRef2.current.setProperty("width", `${signCanvasSize.signWidth+ zoom1*1.3}px`)
-                    signRef2.current.setProperty("height", `${signCanvasSize.signHeight+(zoom1*1.3)/2}px`);
-                    signRef2.current.setProperty("top", `${(signDivTop.current+
-                        Math.floor(-ctx.canvas.height / bottomHeight)) 
-                        - zoom1/1.5}px`)
-                    
+                    const bigoffsetY = -Math.floor((zoom * x) / 1.5);
+                    const ROE = -(zoom * x);
+                    const movementUp = bigoffsetY
+                    const movementDown = ROE - bigoffsetY
+                    const horizonLine = movementUp / (movementUp + movementDown)
+                    const yDown = Math.floor(horizonLine * window.innerHeight)
+                    const BP = signDivTop.current - ctx.canvas.height / bottomHeight + ctx.canvas.height / 15
+                    const signZoom = zoom  *x*1.5* ((yDown - BP) / ctx.canvas.height)
+
+
+                    const zoom1 = Math.floor((-zoom * x) / signDivScale);
+
+                    // const zoomY = Math.round(ctx.canvas.height*0.75)
+                    // const difference = BP + ctx.canvas.height / bottomHeight +((ctx.canvas.width-(zoom*x))/5)/2   - zoomY
+                    // const percentage = difference/((ctx.canvas.width-(zoom*x))/5)
+                    // console.log(BP, zoomY, difference, percentage)
+
+                    const move = (signDivTop.current + Math.floor(-ctx.canvas.height / bottomHeight)) - zoom1 / 1.5;
+                    signRef2.current.setProperty("width", `${signCanvasSize.signWidth + zoom1 * 1.3}px`);
+                    signRef2.current.setProperty("height", `${signCanvasSize.signHeight + (zoom1 * 1.3) / 2}px`);
+                    signRef2.current.setProperty("top", `${move}px`);
+
+                    //console.log(move2)
+
+
+                    ctx.drawImage(
+                        signRef.current,
+                        (frameIndex.current * signWidth), 0, //only change x on sign for frames
+                        signWidth, signWidth, //keep sign width for proper scaling
+                        (ctx.canvas.width / 2) - ctx.canvas.width / 5 * Math.pow(0.67 + scrolled, 1.9) / 2, BP + signZoom, //change position based on center of thing
+                        ctx.canvas.width / 5 * Math.pow(0.67 + scrolled, 1.9), ctx.canvas.width / 5 * Math.pow(0.67 + scrolled, 1.9) //increase canvas drawing size to avoid having to reposition
+                    );
                 }
                 x += 0.5;
             });
@@ -226,9 +294,19 @@ function Foreground({ parentRef }) {
 
 
         else if (zoom) {
-            const zoom = Math.floor((ctx.canvas.height / bottomHeight - ctx.canvas.height / zoomHeight) ^ 2 / 20);
-
             let x = 0;
+
+            const zoom = Math.floor((ctx.canvas.height / bottomHeight - ctx.canvas.height / zoomHeight));
+            const bigoffsetY = -Math.floor((zoom * 1.5) / 1.5);
+            const ROE = -(zoom * 1.5);
+            const movementUp = bigoffsetY
+            const movementDown = ROE - bigoffsetY
+            const horizonLine = movementUp / (movementUp + movementDown)
+            const yDown = Math.floor(horizonLine * window.innerHeight)
+            const BP = signDivTop.current - ctx.canvas.height / bottomHeight + ctx.canvas.height / 15
+            const signZoom = zoom * 1.5 * 1.5* ((yDown - BP) / ctx.canvas.height)
+
+
             images.forEach((image, index) => {
                 ctx.drawImage(
                     image,
@@ -237,6 +315,17 @@ function Foreground({ parentRef }) {
                     0, Math.floor(-ctx.canvas.height / bottomHeight),
                     ctx.canvas.width, ctx.canvas.height
                 );
+
+
+                if (index === images.length - 1) {
+                    ctx.drawImage(
+                        signRef.current,
+                        (frameIndex.current * signWidth), 0, //only change x on sign for frames
+                        signWidth, signWidth, //keep sign width for proper scaling
+                        (ctx.canvas.width / 2) - ctx.canvas.width / 5 * Math.pow(0.67 + 0.5, 1.9) / 2, BP + signZoom, //change position based on center of thing
+                        ctx.canvas.width / 5 * Math.pow(0.67 + 0.5, 1.9), ctx.canvas.width / 5 * Math.pow(0.67 + 0.5, 1.9) //increase canvas drawing size to avoid having to reposition
+                    );
+                }
                 x += 0.5;
             });
         }
@@ -292,13 +381,13 @@ function Foreground({ parentRef }) {
         else {
             if (!stopUpdate.current) {
                 ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-                
-                if((count / turnSpeed) % 1 === 0){
-                    if (frameIndex.current > signCenter) 
+
+                if ((count / turnSpeed) % 1 === 0) {
+                    if (frameIndex.current > signCenter)
                         frameIndex.current -= 1;
-                        
-                    else if (frameIndex.current < signCenter) 
-                        frameIndex.current += 1;                
+
+                    else if (frameIndex.current < signCenter)
+                        frameIndex.current += 1;
                 }
 
                 ctx.drawImage(
@@ -335,17 +424,12 @@ function Foreground({ parentRef }) {
 
     return (
         <div className="foreground-container">
-            <div className="sign-button-container" id="sign" style = {{  width: `${signCanvasSize.signWidth}px`, height: `${signCanvasSize.signHeight}px`}}>
-                {/* <Canvas
-                    draw={drawSign}
-                    width={signCanvasSize.signWidth}
-                    height={signCanvasSize.signHeight}
-                    id ={"signCanvas"}
-                    
-                    // style={{ zIndex: 5 }}
-                /> */}
+            <div className="sign-button-container" id="sign" style={{ width: `${signCanvasSize.signWidth}px`, height: `${signCanvasSize.signHeight}px` }}>
+                <div className = "button-aboutMe" onMouseEnter={() => setHovering("aboutMe")}   onMouseLeave={() => setHovering("none")}></div>
+                <div className = "button-home" onMouseEnter={() => setHovering("project")}   onMouseLeave={() => setHovering("none")}></div>
+                <div className = "button-projects" onMouseEnter={() => setHovering("main")}   onMouseLeave={() => setHovering("none")}></div>
             </div>
-            
+
             <Canvas
                 draw={draw2}
                 width={canvasSize.width}
@@ -353,8 +437,8 @@ function Foreground({ parentRef }) {
                 id="foreground"
                 style={{ zIndex: 5 }}
             />
-            
-            
+
+
         </div>
     );
 }

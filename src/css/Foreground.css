@@ -21,13 +21,44 @@ canvas {
     position: fixed;
     left: 50%;
     transform: translate(-50%, 0);
-
     z-index: 10;
-    background-color: rgba(180, 74, 74, 0.644);
+    /* background-color: rgba(180, 74, 74, 0.644); */
 }
 
 .sign-button-container canvas{
   left: 0;
   top: 0;
   position: relative;
+  display: grid;
+}
+
+.button-aboutMe{
+  position:relative;
+  width: 70%;
+  height:33%;
+  /* background-color: rgba(222, 152, 240, 0.644); */
+  pointer-events: all;
+}
+
+.button-home{
+  position:relative;
+  width: 70%;
+  height:33%;
+  left:30%;
+  /* background-color: rgba(180, 74, 74, 0.644); */
+  pointer-events: all;
+}
+
+.button-projects{
+  position:relative;
+  width: 70%;
+  height:33%;
+  /* background-color: rgba(111, 248, 214, 0.644); */
+  pointer-events: all;
+}
+
+.div-filler{
+  position:relative;
+  width: 30%;
+  height:33%;
 }
