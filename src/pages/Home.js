@@ -1,34 +1,12 @@
-import React, {useEffect, useState, iseRef} from 'react'
+import React, {useEffect, useState, useRef} from 'react'
 import '../css/Home.css';
 import Project from '../components/Project.js'
 import AboutMe from '../components/AboutMe.js'
 
-const Home = ({parentRef}) => {
+const Home = ({parentRef, page}) => {
 
-    const scrollRef = React.useRef(0);
 
-    const [page, setPage] = useState("AboutMe"); // Set the initial page to "Main"
-
-    useEffect(() => {
-            const handleScroll = () => {
-                if (parentRef.current) {
-                    scrollRef.current = parentRef.current.scrollTop;
-                }
-            };
-    
-            if (parentRef.current) {
-                parentRef.current.addEventListener('scroll', handleScroll);
-                
-            }
-    
-            return () => {
-                if (parentRef.current) {
-                    parentRef.current.removeEventListener('scroll', handleScroll);
-                }
-            };
-        }, [parentRef]);
-
-    if(page === "Main"){
+    if(page === "main"){
         
         return(
             <div className="main">
@@ -39,21 +17,20 @@ const Home = ({parentRef}) => {
         )
     }
 
-    else if (page === "Project"){
+    else if (page === "project"){
         return(
             <div className="main">
-                <Project/>
+                <Project />
             </div>
 
         )
     }
 
-    else if (page === "AboutMe"){
+    else if (page === "aboutMe"){
         return(
             <div className="main">
                 <AboutMe/>
             </div>
-
         )
     }
 };

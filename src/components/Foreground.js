@@ -1,16 +1,15 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, use } from 'react';
 import '../css/Foreground.css'; // Import the CSS file for styling
 import Canvas from './Canvas.js'; // Import the Canvas component
 import sky from '../images/sprites/sky3.png'; // Import the image
-import sign from '../images/sprites/sign.png'; // Import the image
+import sign from '../images/sprites/sign.png'; // Import the imagei
 
 
 
-function Foreground({ parentRef }) {
+function Foreground({ parentRef,  setPage }) {
     const scrollRef = useRef(0);
     const [canvasSize, setCanvasSize] = useState({ width: 0, height: 0 });
     const [signCanvasSize, setSignCanvasSize] = useState({ signWidth: 0, signHeight: 0 });
-    const [shiftLeft, setShiftLeft] = useState(0);
     const imageRef = React.useRef(null);
 
     const frameWidth = 2560;
@@ -27,21 +26,24 @@ function Foreground({ parentRef }) {
     const frameIndex = useRef(2);
     const signDivScale = 3;
     const signDivTop = useRef(0);
-    const CP = useRef(0);
-
-    const signDown = useRef(0);
     const signRef2 = useRef(null);
 
+    const fontSizeRef = useRef(0);
+    const fontRef = useRef(null);
+
+    const hoverRef = useRef(null);
+
+    const [showButton, setShowButton] = useState(true);
+    const buttonStyle = useRef(null);
+
     const [hovering, setHovering] = useState("none"); // Set the initial page to "Main"
-
-    const stopUpdate = useRef(false);
-
     const [imageLoaded, setImageLoaded] = useState(false);
-
     const [images, setImages] = useState([]);
 
     const zoom = true; // Turn on off zoom
     const turnSpeed = 20;
+
+    const lastDrawY = useRef(-1);
 
     useEffect(() => {   // Preload images
         const imagePaths = importImages(
@@ -63,9 +65,22 @@ function Foreground({ parentRef }) {
 
     useEffect(() => {
         const signElement = document.getElementById("sign");
+        const buttonElement = document.getElementById("db");
         if (signElement) {
-            const computedStyle = window.getComputedStyle(signElement);
             signRef2.current = signElement.style;
+            buttonStyle.current = buttonElement.style;
+        }
+    }, []);
+
+    useEffect(() => {
+        const fontElement = document.querySelectorAll(".sign-button-container h1");
+        if (fontElement && fontSizeRef.current === 0) {
+            const computedStyle = window.getComputedStyle(fontElement[0]);
+            fontSizeRef.current = parseFloat(computedStyle.fontSize.replace("px", ""));
+            fontRef.current = fontElement;
+            fontElement.forEach((element) => {            
+                element.style.fontSize = `${fontSizeRef.current/3}px`;
+            });
         }
     }, []);
 
@@ -94,6 +109,8 @@ function Foreground({ parentRef }) {
 
         const img2 = new Image();
         img2.src = sign;
+
+
         img.onload = () => {
             imageRef.current = img;
             signRef.current = img2;
@@ -103,7 +120,6 @@ function Foreground({ parentRef }) {
             if (window.innerHeight > window.innerWidth + Math.floor(-window.innerWidth / bottomHeight)) {
                 w = window.innerHeight * 2;
                 const sL = Math.floor((w - window.innerWidth) / 2)
-                setShiftLeft(Math.floor(sL))
                 var style = document.getElementById("foreground").style;
                 style.left = `${-sL}px`;
             }
@@ -134,7 +150,6 @@ function Foreground({ parentRef }) {
             if (tallThin) {
                 w = window.innerHeight * 2;
                 const sL = Math.floor((w - window.innerWidth) / 2)
-                setShiftLeft(sL);
                 //console.log(shiftLeft, sL, w - window.innerWidth)
                 var style = document.getElementById("foreground").style;
                 style.setProperty("left", `${-sL}px`);
@@ -158,32 +173,34 @@ function Foreground({ parentRef }) {
         window.addEventListener('resize', handleResize);
 
         return () => window.removeEventListener('resize', handleResize);
-    }, []);
+    }, []); 
 
     const draw2 = (ctx, count) => {
         if (!imageLoaded || !imageRef.current) return;
 
         const backgroundOffsetY = Math.floor(scrollRef.current * 1.1);
+        if (backgroundOffsetY === lastDrawY.current && (count % turnSpeed !== 0)) return; // No change; skip draw
+        lastDrawY.current = backgroundOffsetY;
 
-        //console.log(ctx.canvas.height, ctx.canvas.width, window.innerHeight, window.innerWidth, tallThin)
-        //console.log(window.innerheight > window.innerWidth+Math.floor(-ctx.canvas.height/bottomHeight), window.innerWidth, ctx.canvas.width)
+        const canvasWidth = ctx.canvas.width
+        const canvasHeight = ctx.canvas.height
 
-        ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-
-        //console.log(backgroundOffsetY*ratio, window.innerWidth/3,ratio)
-
-        //console.log(canvasSize.width, canvasSize.height, ctx.canvas.width, ctx.canvas.height, signCanvasSize.widthS, signCanvasSize.heightS)
+        ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+        
 
         let targetPos;
         
-
         if ((count / turnSpeed) % 1 === 0) {
+            let h1 = null;
             if (hovering === "main") {
                 targetPos = sign1End;
+                
             } else if (hovering === "project") {
-                targetPos = sign2End;
-            } else if (hovering === "aboutMe") {
                 targetPos = sign3End;
+
+            } else if (hovering === "aboutMe") {
+                targetPos = sign2End;
+
             }
             else {
                 targetPos = signCenter;
@@ -195,7 +212,7 @@ function Foreground({ parentRef }) {
                 frameIndex.current += 1;
         }
 
-        if (backgroundOffsetY < ctx.canvas.height / bottomHeight) {
+        if (backgroundOffsetY < canvasHeight / bottomHeight) {
 
             let y = 0;
             let x = 0.9;
@@ -206,7 +223,7 @@ function Foreground({ parentRef }) {
                     0, 0,
                     frameWidth, frameHeight,
                     0, Math.floor(-backgroundOffsetY - y),
-                    ctx.canvas.width, ctx.canvas.height
+                    canvasWidth, canvasHeight
                 );
 
                 if (index === images.length - 1) {
@@ -215,217 +232,150 @@ function Foreground({ parentRef }) {
                     //console.log(move, signDown.current, backgroundOffsetY, y)
                     signRef2.current.setProperty("top", `${move}px`);
 
-
-                    //console.log(targetPos)        
-                    if ((count / turnSpeed) % 1 === 0) {
-                        if (frameIndex.current > targetPos)
-                            frameIndex.current -= 1;
-
-                        else if (frameIndex.current < targetPos)
-                            frameIndex.current += 1;
-                    }
-
                     ctx.drawImage(
                         signRef.current,
                         frameIndex.current * signWidth, 0,
                         signWidth, signWidth,
-                        4 * ctx.canvas.width / 10, move + ctx.canvas.height / 15, //cetner 
-                        ctx.canvas.width / 5, ctx.canvas.height / 5
+                        Math.floor(2 * canvasWidth / 5), Math.floor(move + canvasHeight / 15), //cetner 
+                        Math.floor(canvasWidth / 5), Math.floor(canvasHeight / 5)
                     );
                 }
 
-                y = y - 2 * Math.floor(x * ((ctx.canvas.height / bottomHeight) - backgroundOffsetY) / 15);
+                y = y - 2 * Math.floor(x * ((canvasHeight / bottomHeight) - backgroundOffsetY) / 15);
                 x = x + 0.5;
             });
 
         }
+        
 
-
-        else if (zoom && backgroundOffsetY < ctx.canvas.height / zoomHeight) {
-            
+        else if (zoom && backgroundOffsetY < canvasHeight / zoomHeight) {
+            if((backgroundOffsetY > (canvasHeight / (bottomHeight-0.5)))) {
+                setShowButton(false);
+            }
+            else {
+                setShowButton(true);
+            }
             
             let x = 0;
             images.forEach((image, index) => {
                 
-                const scrolled = backgroundOffsetY / ctx.canvas.height;
+                const scrolled = backgroundOffsetY / canvasHeight;
                 const percentageZoom = (scrolled-0.33)/(0.5-0.33)
                 let zoom = (percentageZoom*x);
                 const growth = frameWidth - zoom*frameWidth
-                
-                console.log(scrolled, percentageZoom, zoom, growth)
-                console.log(scrolled)
+
                 ctx.drawImage(
                     image,
                     zoom*frameWidth/2, zoom*frameWidth/1.5,
                     growth, growth ,
-                    0, Math.floor(-ctx.canvas.height / bottomHeight),
-                    ctx.canvas.width, ctx.canvas.height
+                    0, Math.floor(-canvasHeight / bottomHeight),
+                    canvasWidth, canvasHeight
                 );
                 
-                // ctx.drawImage(
-                //     image,
-                //     -Math.floor((zoom * x) / 2), -Math.floor((zoom * x * 2) / 3),
-                //     frameWidth + zoom * x, frameWidth + zoom * x,
-                //     0, Math.floor(-ctx.canvas.height / bottomHeight),
-                //     ctx.canvas.width, ctx.canvas.height
-                // );
-                const signCanvas = document.getElementById("signCanvas");
 
                 if (index === images.length - 1) {
-                    const horizonLine = (ctx.canvas.height - ctx.canvas.height / bottomHeight)/ctx.canvas.height
-                    const ratio = ctx.canvas.height / window.innerHeight
-                    const pixelRatio = ctx.canvas.width / window.innerWidth ? window.innerWidth > window.innerHeight : ctx.canvas.width / window.innerHeight
-                    const hYC = Math.floor(horizonLine * ctx.canvas.height) +ctx.canvas.height/600
-                    const hYW = hYC/pixelRatio                    
-                    const BP = signDivTop.current - ctx.canvas.height / bottomHeight + ctx.canvas.height / 15
-                    const distTop = (hYW - BP)
-                    const distBottom =  (hYW - (BP+ctx.canvas.width/5+ ctx.canvas.width*zoom/5))
-                    const amountShowing = growth/frameWidth
-                    const perc = distTop/hYW
-                    const translateY = (distTop/(hYW*window.innerHeight)) * ((zoom*frameWidth/1.5) /pixelRatio)
+                    const horizonLine = (canvasHeight - canvasHeight / bottomHeight)/canvasHeight
+                    const sizeDrawnOnCanvas = growth 
+                    const ratioPixelsOnCanvas = sizeDrawnOnCanvas / ctx.canvas.width
+                    
+                    const horizonLineCanvas = (horizonLine*frameWidth)+(frameWidth/bottomHeight)                  
+                    const BP = signDivTop.current - canvasHeight / bottomHeight + canvasHeight / 15
+                    
+                    const percentFromH = ((BP  * ratioPixelsOnCanvas)+ zoom*frameWidth/1.5) / horizonLineCanvas
+                    const amountShowing = signWidth/growth
+                    const signFrameSize = canvasHeight*amountShowing
+                    
+                    const zoom1 = Math.floor(zoom * x * signCanvasSize.signWidth);
 
-                    // ctx.rect(0, hYW-distTop, ctx.canvas.width, 5);
-                    // ctx.rect(0, hYW-distBottom, ctx.canvas.width, 5);
-                    // ctx.fillStyle = "black";
-                    // ctx.fill();
-                    const zoom1 = Math.floor((-zoom * x) / signDivScale);
-
-
-                    const move = (signDivTop.current + Math.floor(-ctx.canvas.height / bottomHeight)) - zoom1 / 1.5;
-                    signRef2.current.setProperty("width", `${signCanvasSize.signWidth + zoom1 * 1.3}px`);
-                    signRef2.current.setProperty("height", `${signCanvasSize.signHeight + (zoom1 * 1.3) / 2}px`);
+                    const move = (signDivTop.current + Math.floor(-canvasHeight / bottomHeight)) - zoom1 / 1.5;
+                    signRef2.current.setProperty("width", `${signCanvasSize.signWidth + zoom1 * 4}px`);
+                    signRef2.current.setProperty("height", `${signCanvasSize.signHeight + (zoom1 * 4) / 2}px`);
                     signRef2.current.setProperty("top", `${move}px`);
-
+                    
+                    fontRef.current.forEach((element) => {
+                        element.style.fontSize = `${Math.round((fontSizeRef.current/3) + (fontSizeRef.current* percentageZoom)/1.5,1)}px`;
+                        
+                    }); 
+                    if (hoverRef.current){
+                        console.log("here")
+                        hoverRef.current.style.fontSize = `${Math.round((fontSizeRef.current/3) + (fontSizeRef.current* percentageZoom),1)}px`;       
+                    }
+                    
                     //console.log(move2)
 
-
+                    
                     ctx.drawImage(
                         signRef.current,
                         (frameIndex.current * signWidth), 0, //only change x on sign for frames
-                        signWidth, signWidth, //keep sign width for proper scaling
-                        // (ctx.canvas.width / 2) - ctx.canvas.width / 5 * Math.pow(0.67 + scrolled, 1.9) / 2
-                        ctx.canvas.width/2 - (ctx.canvas.height*(zoom+1))/(5*amountShowing)/2, BP -  distTop * translateY, //change position based on center of thing
+                        signWidth, signWidth, 
+                        Math.floor(canvasWidth/2 -(signFrameSize)/2), Math.floor(BP -  (percentFromH * zoom * frameWidth/1.5)/(ratioPixelsOnCanvas+1)), //change position based on center of thing
                         // ctx.canvas.width / 5 * Math.pow(0.67 + scrolled, 1.9)
-                        (ctx.canvas.height*(zoom+1))/(5*amountShowing), (ctx.canvas.height*(zoom+1))/(5*amountShowing) //increase canvas drawing size to avoid having to reposition
+                        Math.floor(signFrameSize), Math.floor(signFrameSize) //increase canvas drawing size to avoid having to reposition
                     );
+
+                    
 
                 }
                 x += 0.07;
             });
+
+            
+            
         }
 
 
         else if (zoom) {
             let x = 0;
 
-            const zoom = Math.floor((ctx.canvas.height / bottomHeight - ctx.canvas.height / zoomHeight));
-            const bigoffsetY = -Math.floor((zoom * 1.5) / 1.5);
-            const ROE = -(zoom * 1.5);
-            const movementUp = bigoffsetY
-            const movementDown = ROE - bigoffsetY
-            const horizonLine = movementUp / (movementUp + movementDown)
-            const yDown = Math.floor(horizonLine * window.innerHeight)
-            const BP = signDivTop.current - ctx.canvas.height / bottomHeight + ctx.canvas.height / 15
-            const signZoom = zoom * 1.5 * 1.5* ((yDown - BP) / ctx.canvas.height)
-
-
             images.forEach((image, index) => {
+                const growth = frameWidth - x*frameWidth
                 ctx.drawImage(
                     image,
-                    -Math.floor((zoom * x) / 2), -Math.floor((zoom * x) / 1.5),
-                    frameWidth + zoom * x, frameHeight + zoom * x,
-                    0, Math.floor(-ctx.canvas.height / bottomHeight),
-                    ctx.canvas.width, ctx.canvas.height
+                    x*frameWidth/2, x*frameWidth/1.5,
+                    growth, growth ,
+                    0, Math.floor(-canvasHeight / bottomHeight),
+                    canvasWidth, canvasHeight
                 );
 
 
                 if (index === images.length - 1) {
+                    const horizonLine = (canvasHeight - canvasHeight / bottomHeight)/canvasHeight
+                    const sizeDrawnOnCanvas = growth 
+                    const ratioPixelsOnCanvas = sizeDrawnOnCanvas / canvasWidth
+                    
+                    const horizonLineCanvas = (horizonLine*frameWidth)+(frameWidth/bottomHeight)                  
+                    const BP = signDivTop.current - canvasHeight / bottomHeight + canvasHeight / 15
+                    
+                    const percentFromH = ((BP  * ratioPixelsOnCanvas)+ x*frameWidth/1.5) / horizonLineCanvas
+                    const amountShowing = signWidth/growth
+                    const signFrameSize = canvasHeight*amountShowing
+                    
                     ctx.drawImage(
                         signRef.current,
                         (frameIndex.current * signWidth), 0, //only change x on sign for frames
-                        signWidth, signWidth, //keep sign width for proper scaling
-                        (ctx.canvas.width / 2) - ctx.canvas.width / 5 * Math.pow(0.67 + 0.5, 1.9) / 2, BP + signZoom, //change position based on center of thing
-                        ctx.canvas.width / 5 * Math.pow(0.67 + 0.5, 1.9), ctx.canvas.width / 5 * Math.pow(0.67 + 0.5, 1.9) //increase canvas drawing size to avoid having to reposition
+                        signWidth, signWidth, 
+                        canvasWidth/2 -(signFrameSize)/2, BP - (percentFromH * x * frameWidth/1.5)/(ratioPixelsOnCanvas+1), //change position based on center of thing
+                        // ctx.canvas.width / 5 * Math.pow(0.67 + scrolled, 1.9)
+                        (canvasWidth*amountShowing), (signFrameSize) //increase canvas drawing size to avoid having to reposition
                     );
                 }
-                x += 0.5;
+                    
+                x += 0.07;
             });
         }
 
         else {
-
             images.forEach((image, index) => {
                 ctx.drawImage(
                     image,
                     0, 0,
                     frameWidth, frameHeight,
-                    0, Math.floor(-ctx.canvas.height / bottomHeight),
-                    ctx.canvas.width, ctx.canvas.height
+                    0, Math.floor(-canvasHeight / bottomHeight),
+                    canvasWidth, canvasHeight
                 );
             });
         }
     }
-
-    const drawSign = (ctx, count) => {
-        if (!imageLoaded || !signRef.current) return;
-
-        //console.log("sign", signRef.current, signCanvasSize.widthS, signCanvasSize.heightS, ctx.canvas.width, ctx.canvas.height)
-        let targetPos = 0;
-        stopUpdate.current = false;
-        if (hovering !== "none") {
-            if (hovering === "main") {
-                targetPos = sign1End;
-            } else if (hovering === "project") {
-                targetPos = sign2End;
-            } else if (hovering === "aboutMe") {
-                targetPos = sign3End;
-            }
-            //console.log(targetPos)
-            ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-
-            if ((count / turnSpeed) % 1 === 0) {
-                if (frameIndex.current > targetPos)
-                    frameIndex.current -= 1;
-
-                else if (frameIndex.current < targetPos)
-                    frameIndex.current += 1;
-            }
-
-            ctx.drawImage(
-                signRef.current,
-                frameIndex.current * signWidth, 0,
-                signWidth, signWidth,
-                0, 0,
-                ctx.canvas.width, ctx.canvas.height
-            );
-        }
-
-        else {
-            if (!stopUpdate.current) {
-                ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-
-                if ((count / turnSpeed) % 1 === 0) {
-                    if (frameIndex.current > signCenter)
-                        frameIndex.current -= 1;
-
-                    else if (frameIndex.current < signCenter)
-                        frameIndex.current += 1;
-                }
-
-                ctx.drawImage(
-                    signRef.current,
-                    frameIndex.current * signWidth, 0,
-                    signWidth, signWidth,
-                    0, 0,
-                    ctx.canvas.width, ctx.canvas.height
-                );
-
-                if (frameIndex.current === signCenter) {
-                    stopUpdate.current = true;
-                }
-            }
-        }
-    };
 
     function importImages(r) {
         return r.keys().map(r);
@@ -444,12 +394,78 @@ function Foreground({ parentRef }) {
         );
     }
 
+    function onClick(destination) {
+        setPage(destination);
+        smoothScrollToTop(parentRef.current);
+    }
+
+    function smoothScrollToTop(element, duration = 2000, top = true) {
+        const start = element.scrollTop;
+        
+        const startTime = performance.now();
+      
+        function scroll(timestamp) {
+          const elapsed = timestamp - startTime;
+          const progress = Math.min(elapsed / duration, 1); 
+          element.scrollTop = start  * (1 - easeInOut(progress));
+      
+          if (progress < 1) {
+            requestAnimationFrame(scroll);
+          }
+        }
+
+        function scroll2(timestamp) {
+            const end = element.scrollHeight - element.clientHeight;
+            const dist  = end - start;
+            const elapsed = timestamp - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            element.scrollTop = start + dist * (easeInOut(progress));
+            
+            if (progress < 1) {
+                requestAnimationFrame(scroll2);
+            }
+        }
+
+        if (top) {
+            requestAnimationFrame(scroll);
+        }
+
+        else {
+            requestAnimationFrame(scroll2);
+        }
+      }
+      
+      function easeInOut(t) {
+        return t < 0.5 ? 4 * Math.pow(t, 3) : 1 - Math.pow(-2 * t + 2, 3) / 2;
+      }
+
     return (
         <div className="foreground-container">
             <div className="sign-button-container" id="sign" style={{ width: `${signCanvasSize.signWidth}px`, height: `${signCanvasSize.signHeight}px` }}>
-                <div className = "button-aboutMe" onMouseEnter={() => setHovering("aboutMe")}   onMouseLeave={() => setHovering("none")}></div>
-                <div className = "button-home" onMouseEnter={() => setHovering("project")}   onMouseLeave={() => setHovering("none")}></div>
-                <div className = "button-projects" onMouseEnter={() => setHovering("main")}   onMouseLeave={() => setHovering("none")}></div>
+                <div className = "button-home"
+                onMouseEnter={(e) => {setHovering("main"); hoverRef.current = e.currentTarget.querySelector("h1")}}
+                onMouseLeave={() => {setHovering("none"); hoverRef.current = null}}>
+                    <button onClick={() => onClick("main")}>
+                        <h1>Home</h1>
+                    </button>
+                </div>
+                <div className = "div-filler"></div>
+                <div className = "button-aboutMe" 
+                onMouseEnter={(e) => {setHovering("aboutMe"); hoverRef.current = e.currentTarget.querySelector("h1")}}
+                onMouseLeave={() => {setHovering("none"); hoverRef.current = null}}>
+                    <button onClick={() => onClick("aboutMe")}>
+                        <h1>About Me</h1>
+                    </button>
+                </div>
+                <div className = "div-filler"></div>
+                <div className = "button-projects" 
+                onMouseEnter={(e) => {setHovering("project"); hoverRef.current = e.currentTarget.querySelector("h1")}}
+                onMouseLeave={() => {setHovering("none"); hoverRef.current = null}}>
+                    <button  onClick={() => onClick("project")}>
+                        <h1>Projects</h1>
+                    </button>
+                </div>
+                <div className = "div-filler"></div>
             </div>
 
             <Canvas
@@ -459,6 +475,7 @@ function Foreground({ parentRef }) {
                 id="foreground"
                 style={{ zIndex: 5 }}
             />
+                <button className="down-button" id = "db" style = {{display: showButton ? 'block' : 'none'}} onClick={() => smoothScrollToTop(parentRef.current, 1000, false)}> <i class="arrow down"></i> </button>
 
 
         </div>

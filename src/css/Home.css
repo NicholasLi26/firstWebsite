@@ -1,13 +1,12 @@
-@import url('https://fonts.googleapis.com/css2?family=Advent Pro');
+@import url('https://fonts.googleapis.com/css2?family=Didact+Gothic');
 
 .main {
-    font-size: 1rem;
     width: 100%;
     min-height: 190vh; 
     scrollbar-width: thin;
     font-size: 2rem;
     /* background-color: rgb(FFFFFF, 0.5); */
-    
+    position: relative;
 }
 
 .name-container {
@@ -18,7 +17,7 @@
 .name-container h1 {
     font-size: 6rem;
     text-align: center;
-    font-family: Advent Pro, sans-serif;
+    font-family: Didact Gothic, sans-serif;
     color: white;
 }
 

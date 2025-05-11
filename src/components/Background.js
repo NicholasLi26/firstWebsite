@@ -14,13 +14,10 @@ function Background( {parentRef} ) {
     const frameHeight = 2560;
     const totalFrames = 9; 
     const bottomHeight = 3;
-    const zoomHeight = 2;
 
     const [imageLoaded, setImageLoaded] = useState(false);
     
-    const [images, setImages] = useState([]);
 
-    const zoom = true; // Turn on off zoom
     const speed = 15; //fps
 
     useEffect(() => {
@@ -118,23 +115,7 @@ function Background( {parentRef} ) {
             );
         }
 
-        
-        else if (zoom && backgroundOffsetY < ctx.canvas.height/zoomHeight) {
-            let y = 0;
-            let x = 0;
-            let zoom = Math.floor((ctx.canvas.height/bottomHeight - backgroundOffsetY)^2 / 20);
-            ctx.drawImage(
-                imageRef.current,
-                frameIndex * frameWidth, 0,
-                frameWidth, frameHeight,
-                0, Math.floor(-ctx.canvas.height/bottomHeight) ,
-                ctx.canvas.width, ctx.canvas.height 
-            );
-        }
-
-
-        else if (zoom){
-            const zoom = Math.floor((ctx.canvas.height/bottomHeight - ctx.canvas.height/zoomHeight)^2 / 20);
+        else{
             ctx.drawImage(
                 imageRef.current,
                 frameIndex * frameWidth, 0,
@@ -144,50 +125,20 @@ function Background( {parentRef} ) {
             );
         }
 
-        else {
-            ctx.drawImage(
-                imageRef.current,
-                frameIndex * frameWidth, 0,
-                frameWidth, frameHeight,
-                0, -ctx.canvas.height/bottomHeight,
-                ctx.canvas.width, ctx.canvas.height 
-            );
-        }
+        
     };
 
     return (
         <div className = "background-container">
-            
-            {/* {imageMeta.map((imgMeta, index) => (
-                <img
-                    id={imgMeta.id}
-                    src={imgMeta.src}
-                    ref={el => imageRefs.current[index] = el}
-                    alt=""
-                    style = {{ y: -imgMeta.top}}
-                />
-            ))} */}
+
             <Canvas
             draw={draw}
             width={canvasSize.width}
             height={canvasSize.height}
             id = "background"
             />
-
-        {/* <Canvas
-            draw={draw2}
-            width={canvasSize.width}
-            height={canvasSize.height}
-            id = "foreground"
-            style = {{ zIndex: 5}}
-        /> */}
            
         </div>
-        
-        
-        // <div className="animated-background" >
-        //     <img id = "background" src = {forest} />
-        // </div>
     );
 }
 
