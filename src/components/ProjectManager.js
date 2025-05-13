@@ -55,11 +55,15 @@ const ProjectManager = () => {
     
 
     return (
-        <div className='main-container-manager'>
-            <Project {...projects[currentIndex]} />
-            <button className="side-button-PM leftB2" onClick={handlePrev}><i class="arrow-3 leftArrow"></i></button>
+        <div>
+            <div className='main-container-manager'>
+            <   Project {...projects[currentIndex]} />
+            
+            </div>
+        <button className="side-button-PM leftB2" onClick={handlePrev}><i class="arrow-3 leftArrow"></i></button>
             <button className="side-button-PM rightB2" onClick={handleNext}><i class="arrow-3 rightArrow"></i></button>
         </div>
+        
     );
 }
 

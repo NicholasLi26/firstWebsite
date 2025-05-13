@@ -231,7 +231,7 @@
   transition: all 0.2s;
 }
 
-@media only screen and (max-width: 1280px){
+@media only screen and (max-width: 1280px) {
     .arrow-2 {
         border-width: 0 0.4vh 0.4vh 0;
         padding: 0.7vh;

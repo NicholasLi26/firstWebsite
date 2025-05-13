@@ -51,14 +51,16 @@
   transition: all 0.2s;
 }
 
-@media only screen and (max-width: 1280px){
+@media only screen and (max-width: 1280px) {
     .arrow-3 {
-        border: solid rgba(5, 5, 5, 0.616);
         border-width: 0 0.4vh 0.4vh 0;
-        display: inline-block;
         padding: 0.7vh;
-        border-radius: 10%;
-        background-color: rgba(255, 255, 255, 0);
+    }
+
+    .arrow-3:hover {
+        border-width: 0 0.4vh 0.4vh 0;
+        padding: 0.7vh;
+
     }
 
     .side-button-PM{
@@ -71,10 +73,10 @@
         background-color: rgba(255, 255, 255, 0);
     }
     .leftB2{
-    left: 11.5%;
-}
+        left: 11.5%;
+    }
 
-.rightB2{
-    right: 11.5%;
-}   
+    .rightB2{
+        right: 11.5%;
+    }   
 }

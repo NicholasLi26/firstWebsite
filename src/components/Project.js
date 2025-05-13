@@ -28,8 +28,11 @@ const Project = (props = {}) => {
                         <p1>{props.outcomes}</p1>
                     </div>
                     <div className="description">
-                        <p3>About:</p3><br/>
-                        <p1>{props.description}</p1>
+                        <div className='description-inner'>
+                            <p3>About:</p3><br/>
+                            <p1>{props.description}</p1>
+                        </div>
+
                     </div>
                 </div>
             </div>

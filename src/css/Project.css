@@ -77,6 +77,10 @@
     scrollbar-width: thin;
 }
 
+.description-inner{
+    width:95%
+}
+
 .description p1{
     font-size: 0.8em;
 }
@@ -112,10 +116,10 @@
     font-size: 0.8em;
 }
 
-@media only screen and (max-width: 1280px) {
+@media only screen and (max-width: 1280px)  {
     .text-container{
         flex-direction: column;
-        width: 100%;
+        width: 95%;
         height: 90%;
         overflow-y: scroll;
         scrollbar-width: thin;
@@ -164,6 +168,10 @@
         top: 0;
         overflow-y: visible; 
     }
+
+    .description-inner{
+    width:98%
+}
 }
 
 p3{

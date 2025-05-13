@@ -30,6 +30,7 @@ function Foreground({ parentRef,  setPage }) {
 
     const fontSizeRef = useRef(0);
     const fontRef = useRef(null);
+    const baselineRef = useRef(null);
 
     const hoverRef = useRef(null);
 
@@ -76,10 +77,10 @@ function Foreground({ parentRef,  setPage }) {
         const fontElement = document.querySelectorAll(".sign-button-container h1");
         const fontSizeElement = document.querySelector(".baseLine-font h1");
         if (fontElement && fontSizeRef.current === 0) {
-            const computedStyle = window.getComputedStyle(fontElement[0]);
             const computedStyle2 = window.getComputedStyle(fontSizeElement);
             fontSizeRef.current = parseFloat(computedStyle2.fontSize.replace("px", ""));
             fontRef.current = fontElement;
+            baselineRef.current = computedStyle2;
             fontElement.forEach((element) => {            
                 element.style.fontSize = `${fontSizeRef.current/3}px`;
             });
@@ -164,6 +165,11 @@ function Foreground({ parentRef,  setPage }) {
             setSignCanvasSize({ signWidth, signHeight });
 
             signDivTop.current = Math.floor(w / bottomHeight) + w / 6;
+            
+            fontSizeRef.current = parseFloat(baselineRef.current.fontSize.replace("px", ""));
+            fontRef.current.forEach((element) => {            
+                element.style.fontSize = `${fontSizeRef.current/3}px`;
+            });
             
 
 

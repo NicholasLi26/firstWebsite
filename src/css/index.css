@@ -2,9 +2,9 @@ body, html {
   overflow-x: hidden;
 }
 
-@media only screen and (max-width: 1280px) {
+@media only screen and (max-width: 1280px)  {
   body, html{
-    font-size: 8px;
+    font-size: 9px;
   }
 }
 
