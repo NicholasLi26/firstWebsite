@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Project from './Project.js';
+import '../css/ProjectManager.css';
 
 const palander = {
     title: "Palander",
@@ -21,8 +22,8 @@ const quSolver = {
     libraries: "Swing",
     outcomes:"Regular solve times anywhere between 5ms to 20ms per board, with up to a 10x10 board size. ",
     description:"Created a graphical puzzle solver for the logic game 'Queens' that can be found on LinkedIn. It was made as a passion project "+
-    "to help me both get the fastest possible solve times while also learning more about the game itself. It turned out extremely well, with solve times"
-    +"being under 30ms on all cases run. It uses basic constraint satisfaction algorithms with no backtracking, with contstraint modification as it progresses. "+
+    "to help me get the fastest possible solve times, in the process helping me get better at the game itself. It turned out extremely well, with solve times "
+    +"being under 30ms on all cases run. It uses basic constraint satisfaction algorithms with no backtracking, with board modification as it progresses. "+
     "Though missing a few checks for the more extreme boards, it is extremely modular and supports adding additional checks."
 }
 
@@ -54,8 +55,10 @@ const ProjectManager = () => {
     
 
     return (
-        <div>
-            <Project {...palander} />
+        <div className='main-container-manager'>
+            <Project {...projects[currentIndex]} />
+            <button className="side-button-PM leftB2" onClick={handlePrev}><i class="arrow-3 leftArrow"></i></button>
+            <button className="side-button-PM rightB2" onClick={handleNext}><i class="arrow-3 rightArrow"></i></button>
         </div>
     );
 }

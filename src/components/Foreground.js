@@ -74,9 +74,11 @@ function Foreground({ parentRef,  setPage }) {
 
     useEffect(() => {
         const fontElement = document.querySelectorAll(".sign-button-container h1");
+        const fontSizeElement = document.querySelector(".baseLine-font h1");
         if (fontElement && fontSizeRef.current === 0) {
             const computedStyle = window.getComputedStyle(fontElement[0]);
-            fontSizeRef.current = parseFloat(computedStyle.fontSize.replace("px", ""));
+            const computedStyle2 = window.getComputedStyle(fontSizeElement);
+            fontSizeRef.current = parseFloat(computedStyle2.fontSize.replace("px", ""));
             fontRef.current = fontElement;
             fontElement.forEach((element) => {            
                 element.style.fontSize = `${fontSizeRef.current/3}px`;
@@ -133,8 +135,6 @@ function Foreground({ parentRef,  setPage }) {
 
             signDivTop.current = Math.floor(w / bottomHeight) + w / 6;
 
-            
-
             const width = w;
             const height = w;
             setCanvasSize({ width, height });
@@ -164,6 +164,8 @@ function Foreground({ parentRef,  setPage }) {
             setSignCanvasSize({ signWidth, signHeight });
 
             signDivTop.current = Math.floor(w / bottomHeight) + w / 6;
+            
+
 
             const width = w;
             const height = w;
@@ -483,8 +485,7 @@ function Foreground({ parentRef,  setPage }) {
                 style={{ zIndex: 5 }}
             />
                 <button className="down-button" id = "db" style = {{display: showButton ? 'block' : 'none'}} onClick={() => smoothScrollToTop(parentRef.current, 1000, false)}> <i class="arrow down"></i> </button>
-
-
+            <div className="baseLine-font"><h1></h1></div>
         </div>
     );
 }
