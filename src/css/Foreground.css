@@ -30,7 +30,7 @@ canvas {
 
 .button-aboutMe{
   position:relative;
-  width: 52%;
+  width: 55%;
   height:30%;
   left:62.5%;
   top: -5%;
@@ -171,3 +171,4 @@ canvas {
     opacity: 0;
   }
 }
+

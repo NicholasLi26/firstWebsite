@@ -297,7 +297,6 @@ function Foreground({ parentRef,  setPage }) {
                         
                     }); 
                     if (hoverRef.current){
-                        console.log("here")
                         hoverRef.current.style.fontSize = `${Math.round((fontSizeRef.current/3) + (fontSizeRef.current* percentageZoom),1)}px`;       
                     }
                     
@@ -358,6 +357,14 @@ function Foreground({ parentRef,  setPage }) {
                         // ctx.canvas.width / 5 * Math.pow(0.67 + scrolled, 1.9)
                         (canvasWidth*amountShowing), (signFrameSize) //increase canvas drawing size to avoid having to reposition
                     );
+                    fontRef.current.forEach((element) => {
+                        element.style.fontSize = `${fontSizeRef}px`;
+                        
+                    }); 
+                    if (hoverRef.current){
+                        hoverRef.current.style.fontSize = `${fontSizeRef.current* 1.2}px`;       
+                    }
+
                 }
                     
                 x += 0.07;

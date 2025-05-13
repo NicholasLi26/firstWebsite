@@ -1,10 +1,26 @@
-@import url('https://fonts.googleapis.com/css2?family=Advent Pro');
+@import url('https://fonts.googleapis.com/css2?family=Advent+Pro');
 .main-container-project {
   width: 100%;
   height: 100%;
   position: relative;
   z-index: 1;
 }
+.content{
+    padding-top: 50px; /* Space between content */
+    font-size: 1.5em;
+    color: white;
+}
+.main-container-header {
+    width: 100%;
+}
+.main-container-header h1 {
+    padding-top: 8vh;
+    font-size: 6rem;
+    text-align: center;
+    font-family: Advent Pro, sans-serif;
+    color: white;
+}
+
 
 .project {
     left: 15vw;
@@ -14,6 +30,14 @@
     display: flex;
     flex-direction: row;
     align-items: center;
+    background-color: rgba(58, 88, 97, 0.726);
+    border-radius: 5vw;
+}
+
+.main-container-project h1 {
+    font-size: 5rem;
+    text-align: center;
+    color: white;
 }
 
 .image-container {
@@ -29,9 +53,11 @@
     position: relative;
     width: 90%;
     height: 90%;
-    /* background-color: rgba(58, 88, 97, 0.726); */
-    padding-left:5%;
-    padding-top: 5%;
+    border-left: 5%;
+    border-top: 5%;
+    left: 5%;
+    top: 5%;
+    overflow: hidden;
 }
 
 .image-subcontainer img {
@@ -39,30 +65,133 @@
     height: 100%;
     border-radius: 12%;
     object-fit: cover;
+    display: block;
 }
 
-.image-container2 {
-    position: relative;
-    width: 45%;
-    height: 100%;
-    background-color: rgba(58, 88, 97, 0.726);
-    border-top-left-radius:5vw;
-    border-bottom-left-radius:5vw;
-}
-
-.image-container2 img{
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 10%;
-}
 
 .text-container {
     position: relative;
-    width: 67%;
+    left:5%;
+    width: 90%;
+    height: 90%;
+    /* background-color: rgba(58, 88, 97, 0.726); */
+    display: flex;
+}
+
+.details{
+    position: relative;
+    width: 48%;
+    height: 60%;
+    /* background-color: rgba(58, 97, 63, 0.726); */
+    font-family: sans-serif;
+    color: white;
+}
+
+.details p1{
+    font-size: 0.8em;
+}
+
+.description{
+    position: absolute;
+    width: 50%;
     height: 100%;
-    padding-left: 5vw;
-    background-color: rgba(71, 149, 173, 0.801);
-    border-top-right-radius: 5vw;
-    border-bottom-right-radius: 5vw;
+    left: 50%;
+    border-top: 2%;
+    /* background-color: rgba(58, 59, 97, 0.726); */
+    font-family: sans-serif;
+    color: white;   
+    white-space: pre-line;
+    overflow-y: auto;
+    scrollbar-width: thin;
+}
+
+.description p1{
+    font-size: 0.8em;
+}
+
+.proj-title{
+    position:relative;
+    width: 100%;
+    height: 20%;
+    /* background-color: rgba(97, 58, 60, 0.726); */
+}
+
+.proj-title h1{
+    font-size: 3rem;
+    font-family:  sans-serif;
+    color: white;
+    text-align: left;
+}
+
+.outcomes{
+    position:absolute;
+    width: 48%;
+    height: 40%;
+    top: 60%;
+    /* background-color: rgba(58, 96, 97, 0.726); */
+    font-family: sans-serif;
+    color: white;   
+    white-space: pre-line;
+    overflow-y: auto;
+    scrollbar-width: thin;
+}
+
+.outcomes p1{
+    font-size: 0.8em;
+}
+
+p3{
+    font-size: 1.2em;
+    color: rgb(128, 219, 255);
+}
+
+h3{
+  color: rgb(128, 219, 255);
+}
+
+.side-button{
+  position: fixed;
+  width: 10%;
+  left: 50%;
+  transform: translate(-50%, 0);
+  height: 10vh;
+  top:85vh;
+  z-index: 100;
+  background-color: rgba(255, 255, 255, 0);
+  cursor: pointer;
+  font-size: 4rem;
+  pointer-events: all;
+  border: none;
+}
+
+.arrow {
+  border: solid rgba(255, 255, 255, 0.616);
+  border-width: 0 0.5rem 0.5rem 0;
+  display: inline-block;
+  padding: 1rem;
+  border-radius: 10%;
+  background-color: rgba(255, 255, 255, 0);
+  -webkit-animation: downAnim 3s infinite;
+  animation: downAnim 3s infinite;
+}
+
+.arrow left{
+    transform: rotate(135deg);
+    -webkit-transform: rotate(135deg);
+}
+
+.arrow right{
+    transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+}
+
+.arrow:hover {
+  border: solid rgba(0, 0, 0, 0.616);
+  border-width: 0 0.5rem 0.5rem 0;
+  display: inline-block;
+  padding: 1rem;
+  border-radius: 10%;
+  transition: all 0.2s;
+  -webkit-animation: downAnim 3s infinite;
+  animation: downAnim 3s infinite;
 }

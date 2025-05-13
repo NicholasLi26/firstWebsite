@@ -39,7 +39,7 @@
     position: relative;
     display: flex;
     flex-direction: row;
-    align-items: center;
+    
 }
 
 .image-container-AboutMe {
@@ -68,7 +68,7 @@
     height: 100%;
     border-radius: 12%;
     object-fit: cover;
-    display: block;
+    background-color: rgba(31, 170, 27, 0.726);
     
 }
 
@@ -146,4 +146,57 @@
     height: 100%;
     object-fit: cover;
     border-radius: 12%;
+}
+
+.side-button{
+  position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    transform: translateY(-50%);
+    z-index: 2;
+    background-color: rgba(255, 255, 255, 0);
+    color: #333;
+    cursor: pointer;
+    border-radius: 50%;
+    border: none;
+    transition: background 0.2s;
+}
+
+.arrow-2 {
+  border: solid rgba(5, 5, 5, 0.616);
+  border-width: 0 0.4vw 0.4vw 0;
+  display: inline-block;
+  padding: 0.7vw;
+  border-radius: 10%;
+  background-color: rgba(255, 255, 255, 0);
+}
+
+.leftArrow{
+    transform: rotate(135deg);
+    -webkit-transform: rotate(135deg);
+    
+}
+
+.rightArrow{
+    transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+}
+
+.leftB{
+    left: 1%;
+}
+
+.rightB{
+    left: 89%;
+}
+
+.arrow-2:hover {
+  border: solid rgba(44, 168, 168, 0.616);
+  border-width: 0 0.4vw 0.4vw 0;
+  display: inline-block;
+  padding: 0.7vw;
+  border-radius: 10%;
+  background-color: rgba(255, 255, 255, 0);
+  transition: all 0.2s;
+
 }

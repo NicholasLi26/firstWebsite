@@ -1,6 +1,6 @@
 import React, {useEffect, useState, useRef} from 'react'
 import '../css/Home.css';
-import Project from '../components/Project.js'
+import ProjectManager from '../components/ProjectManager.js'
 import AboutMe from '../components/AboutMe.js'
 
 const Home = ({parentRef, page}) => {
@@ -20,7 +20,7 @@ const Home = ({parentRef, page}) => {
     else if (page === "project"){
         return(
             <div className="main">
-                <Project />
+                <ProjectManager />
             </div>
 
         )
