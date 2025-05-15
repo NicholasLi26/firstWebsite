@@ -1,8 +1,13 @@
 import React, {useState} from 'react'
+import { FaFileInvoice , FaGithub, FaLinkedin, FaInstagram, FaEnvelope, FaDownload  } from 'react-icons/fa';
+
 import '../css/AboutMe.css';
 import me from "../images/random/me1.jpg"; 
 import me2 from "../images/random/me2.jpg";
 import me3 from "../images/random/me3.jpg";
+import file from "../files/resume.pdf";
+
+
 
 const images = [me2, me3, me];
 
@@ -27,6 +32,7 @@ const AboutMe = () => {
         <div className="main-container-AboutMe">
             <div className="main-container-header">
                 <h1>About Me</h1>
+                
             </div>
             <div className="AboutMe">
                 <div className="image-container-AboutMe">
@@ -50,21 +56,21 @@ const AboutMe = () => {
                     <div className="aboutMe-text-outer">
                         <div className="aboutMe-text">
                             <h2> Hello! I'm Nicholas Li. Welcome to my website!</h2>
-                            <p> I made this not only to showcase my projects, but also to give 
-                                some insight into me! I believe that you can only learn so much from 
-                                an interview or a resume. 
+                            <p> I made this not only to showcase my projects, but also to give
+                                some insight into me! I believe that you can only learn so much from
+                                an interview or a resume.
                             </p>
                             <br/>
                             <p>
-                                I'm a 3rd year computer science student at Queens Univerity, currently on summer break. As seen
+                                I'm a 3rd year computer science student at Queens University, currently on summer break. As seen
                                 with my website, I like to put a little whimsy into my work, with a bit of
-                                overcomplication for fun. This website is both a side project as well as a way to 
-                                showcase my work and code. I'll be regularly updating it both with my projects as well as 
+                                overcomplication for fun. This website is both a side project as well as a way to
+                                showcase my work and code. I'll be regularly updating it both with my projects as well as
                                 new features to the website itself.
                             </p>
                             <br/>
                             <p>
-                                In terms of programming, I'm more of a Java and python person (Other languages I know can be found on resume). Java is usually my 
+                                In terms of programming, I'm more of a Java and python person (Other languages I know can be found on resume). Java is usually my
                                 go to language , but I use python for ease of use with most AI libraries. I recently have been tending towards
                                 more AI and machine learning projects, but I also have a passion for game development on the side. I'm currently
                                 working on a way to combine the two.
@@ -72,21 +78,37 @@ const AboutMe = () => {
                             <br/>
                             <p>
                                 If i didn't get into coding, I think I would've enjoyed being a geologist.
-                                I love being outdoors, and I've always wanted to be an astronaut, so I figured geology would be 
-                                a good way into both. I also enjoy art, and although I'm mediocre, I do like to encorperate it into
+                                I love being outdoors, and I've always wanted to be an astronaut, so I figured geology would be
+                                a good way into both. I also enjoy art, and although I'm mediocre, I do like to incorporate it into
                                 the games I develop. Aside from that, I enjoy video games (I'm in CS),
                                 rock climbing (I'm in CS), as well as reading and classical guitar (Not very CS). I'm big into music,
-                                if you have any playlists or song recomendations let me know. I'm Emerald 4 if anyone
+                                if you have any playlists or song recommendations let me know. I'm Emerald 4 if anyone
                                 is wondering.
                             </p>
                             <br/>
                             <p>
-                                Thanks for reading! Feel free to reach out to me if you have any questions or want to chat! 
+                                Thanks for reading! Feel free to reach out to me if you have any questions or want to chat!
                             </p>
 
                         </div>
                     </div>
                 </div>
+            </div>
+            <div className="socials">
+                <span className="desktop">
+                    <a href="mailto:nicholas@lifamily.ca"> <FaEnvelope/> nicholas@lifamily.ca </a> -
+                    <a href="https://github.com/NicholasLi26" target="_blank" rel="noopener noreferrer"> <FaGithub /> Nicholas.li26</a> - 
+                    <a href="https://www.linkedin.com/in/nicholas-b-li/" target="_blank" rel="noopener noreferrer"> <FaLinkedin /> Nicholas Li</a> -
+                    <a href="https://www.instagram.com/_nick._.li/" target="_blank" rel="noopener noreferrer"> <FaInstagram /> _nick._.li</a> -
+                    <a href={file} target="_blank" rel="noopener noreferrer" download="NicholasLiResume.pdf"> <FaDownload /> Resume</a> 
+                </span>
+                <span className="mobile">
+                    <a href="mailto:nicholas@lifamily.ca"> <FaEnvelope/> </a> -
+                    <a href="https://github.com/NicholasLi26" target="_blank" rel="noopener noreferrer"> <FaGithub /> </a> - 
+                    <a href="https://www.linkedin.com/in/nicholas-b-li/" target="_blank" rel="noopener noreferrer"> <FaLinkedin /> </a> -
+                    <a href="https://www.instagram.com/_nick._.li/" target="_blank" rel="noopener noreferrer"> <FaInstagram /> </a> -
+                    <a href={file} target="_blank" rel="noopener noreferrer" download="NicholasLiResume.pdf"> <FaDownload /> Resume</a> 
+                </span>
             </div>
         </div>
     )

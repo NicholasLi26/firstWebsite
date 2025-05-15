@@ -3,17 +3,17 @@ import Project from './Project.js';
 import '../css/ProjectManager.css';
 
 const palander = {
-    title: "Palander",
+    title: "Palendar",
     languages: "Python",
     libraries: "OpenCV, Streamlit, Numpy, ask_gemini ",
-    outcomes: "Averaged around a 10 second execution time per week for each image uploaded for schedule parsing. This includes the calls to gemeni API and final output in google calander. ",
-    description: "Palander was made as a hackathon project for the 2025 QHacks hackathon. It automatically took an uploaded schedule, and along with inputted user data like sleep times and study hours, customized your schedule with study times and automatically uploaded it to google calander. "+
-    "It was designed to allow users to uploade their schedule as a .png or .jpg file. This file was parsed into days using OpenCV, " +
+    outcomes: "Averaged around a 10 second execution time per week for each image uploaded for schedule parsing. This includes the calls to gemini API and final output in google calendar. ",
+    description: "Palander was made as a hackathon project for the 2025 QHacks hackathon. It automatically took an uploaded schedule, and along with inputted user data like sleep times and study hours, customized your schedule with study times and automatically uploaded it to google calendar. "+
+    "It was designed to allow users to upload their schedule as a .png or .jpg file. This file was parsed into days using OpenCV, " +
     "which was then sent to Google gemini's LLM for data extraction. Said data was then managed within python, which handled it to an hourly basis. " +
-    "Because of this, it was able to manage schedules down to the day number and hour, and allowed for up to a whole year of cusomized schedule tracking. " +
+    "Because of this, it was able to manage schedules down to the day number and hour, and allowed for up to a whole year of customized schedule tracking. " +
     "Other features were added, such as allowing users to set undisturbed wake up hours, special activities, sleep-in times and daily sleep hours, "+
-    "all of which are taken into account when generating the schedule. This project, being extremely ambitious, wasn't finished in it's entirety during "+
-    "the hackathon, but was finished afterwards. Even so, it was a new challange and a practical solution to a real-world problem that I often face. " 
+    "all of which are taken into account when generating the schedule. This project, being extremely ambitious, wasn't finished in its entirety during "+
+    "the hackathon, but was finished afterwards. Even so, it was a new challenge and a practical solution to a real-world problem that I often face. "
 };
 
 const quSolver = {
